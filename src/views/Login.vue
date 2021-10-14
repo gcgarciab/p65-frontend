@@ -1,17 +1,53 @@
 <template>
   <section class="login">
-    <form>
+    <form @submit.prevent="login()">
       <h3 class="form-title">Iniciar Sesión</h3>
-      <input type="text" placeholder="Escriba su correo" class="form-input">
-      <input type="password" placeholder="Contraseña" class="form-input">
+      <input
+        type="text"
+        placeholder="Escriba su usuario"
+        class="form-input"
+        v-model="username"
+      >
+      <input
+        type="password"
+        placeholder="Contraseña"
+        class="form-input"
+        v-model="password"
+      >
       <button type="submit" class="form-button">Iniciar sesión</button>
     </form>
   </section>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-  name: "Login"
+  name: "Login",
+
+  data() {
+    return {
+      username: '',
+      password: ''
+    }
+  },
+
+  methods: {
+    login() {
+      axios.post('https://p65-bank-backend.herokuapp.com/login/', {
+        username: this.username,
+        password: this.password
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(result => {
+        console.log(result.data)
+      }).catch(error => {
+        alert(error)
+      })
+    }
+  }
 }
 </script>
 
